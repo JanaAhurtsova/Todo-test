@@ -1,0 +1,1 @@
+export const ERROR_TASK = 'This field cannot be blank';
