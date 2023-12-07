@@ -4,12 +4,14 @@ import { useState } from "react";
 import { ERROR_TASK } from "@/manager/errors";
 import { useTodoEvent } from "@/redux/hooks";
 import { getTags } from "@/manager/tags";
-import style from './style.module.scss';
+import Tags from "../tags";
 import { TodoFormType } from "./type";
+import style from './style.module.scss';
 
 function TodoForm({isOpen, setIsOpen }: TodoFormType) {
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
   const addTodo = useTodoEvent();
 
   const onClose = () => {
@@ -20,16 +22,17 @@ function TodoForm({isOpen, setIsOpen }: TodoFormType) {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) =>{
     setValue(e.target.value);
     setError('');
+    const valueWithHash = getTags(e.target.value);
+    setTags(valueWithHash);
   };
 
   const createTask = () => {
     if (!value.trim()) {
       setError(ERROR_TASK);
     } else {
-      const valueWithHash = getTags(value);
-      
-      addTodo({ id: uuidv4(), value, tags: valueWithHash, completed: false });
+      addTodo({ id: uuidv4(), value, tags, completed: false });
       setValue('');
+      setTags([]);
       onClose();
     }
   }
@@ -55,6 +58,7 @@ function TodoForm({isOpen, setIsOpen }: TodoFormType) {
         <div className={style.error__container}>
           {error && <Typography className={style.error}>{error}</Typography>}
         </div>
+        <Tags tags={tags} />
       </DialogContent>
       <DialogActions>
         <Button variant="contained" onClick={createTask}>Save</Button>

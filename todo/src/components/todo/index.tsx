@@ -1,15 +1,12 @@
 import {
   Box,
   Checkbox,
-  Chip,
   IconButton,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Stack,
   TextField,
 } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
 import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -18,6 +15,7 @@ import { useTodoEdit, useTodoRemove, useTodoToggle } from '@/redux/hooks';
 import { getTags, getUniqueTags } from '@/manager/tags';
 import { TodoType } from './type';
 import style from './style.module.scss';
+import Tags from '../tags';
 
 function Todo({ id, completed, value, tags }: TodoType) {
   const [isEdit, setIsEdit] = useState(false);
@@ -48,32 +46,12 @@ function Todo({ id, completed, value, tags }: TodoType) {
             autoFocus
             className={style.edit}
           />
-            <Stack direction="row" spacing={1}>
-              {newTags.map((tag) => (
-                <Chip
-                  key={uuidv4()}
-                  label={tag}
-                  color="success"
-                  variant="outlined"
-                  className={style.tag}
-                />
-              ))}
-            </Stack>
+            <Tags tags={newTags} />
         </Box>
       ) : (
         <Box className={style.box}>
           <ListItemText className={style.edited} primary={newValue} />
-            <Stack direction="row" spacing={1}>
-              {newTags.map((tag) => (
-                <Chip
-                  key={uuidv4()}
-                  label={tag}
-                  color="success"
-                  variant="outlined"
-                  className={style.tag}
-                />
-              ))}
-            </Stack>
+            <Tags tags={newTags} />
         </Box>
       )}
 
