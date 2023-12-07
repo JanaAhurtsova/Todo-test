@@ -33,6 +33,7 @@ module.exports = {
     ],
     'react/react-in-jsx-scope': 'off',
     'react/jsx-uses-react': 'off',
+    'react/jsx-props-no-spreading': 'off',
     '@typescript-eslint/no-explicit-any': 'error',
     'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': 'off',
@@ -46,6 +47,7 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'no-param-reassign': [2, { props: false }],
   },
   settings: {
     react: {
@@ -58,5 +60,6 @@ module.exports = {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
     },
+    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
   },
 };

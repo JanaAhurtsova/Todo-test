@@ -1,15 +1,21 @@
 import { useState } from "react";
-import Controls from "./components/controls";
+import { Button } from "@mui/material";
 import Header from "./components/header";
-import TaskForm from "./components/task-form";
+import TaskForm from "./components/todo-form";
+import TodosList from "./components/list";
+import Filter from "./components/filter";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <Header/>
-      <Controls setIsOpen={setIsOpen} />
+      <Header />
+      <Button variant="contained" onClick={() => setIsOpen(true)}>
+        + Add Task
+      </Button>
+      <Filter />
       <TaskForm isOpen={isOpen} setIsOpen={setIsOpen} />
+      <TodosList />
     </>
   );
 }

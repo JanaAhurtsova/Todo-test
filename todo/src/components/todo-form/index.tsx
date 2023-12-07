@@ -1,16 +1,21 @@
 import { Button, DialogActions, Dialog, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 import { v4 as uuidv4 } from 'uuid';
-import { TaskFormType } from "./type";
-import style from './style.module.scss';
 import { useState } from "react";
 import { ERROR_TASK } from "@/manager/errors";
+import { useTodoEvent } from "@/redux/hooks";
+import { getTags } from "@/manager/tags";
+import style from './style.module.scss';
+import { TodoFormType } from "./type";
 
-function TaskForm({isOpen, setIsOpen}: TaskFormType) {
+function TodoForm({isOpen, setIsOpen }: TodoFormType) {
   const [value, setValue] = useState('');
-  const [tags, setTag] = useState<string[]>([]);
   const [error, setError] = useState('');
+  const addTodo = useTodoEvent();
 
-  const onClose = () => setIsOpen(false);
+  const onClose = () => {
+    setIsOpen(false);
+    setError('');
+  };
 
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) =>{
     setValue(e.target.value);
@@ -20,13 +25,12 @@ function TaskForm({isOpen, setIsOpen}: TaskFormType) {
   const createTask = () => {
     if (!value.trim()) {
       setError(ERROR_TASK);
-    }
-
-    const valueArr = value.split(/(#[a-z\d-]+)/gi);
-    const valueWithHash = valueArr.find((el) => el.startsWith('#'));
-
-    if (valueWithHash) {
-      setTag((prev) => prev.concat(valueWithHash.replace('#', '')));
+    } else {
+      const valueWithHash = getTags(value);
+      
+      addTodo({ id: uuidv4(), value, tags: valueWithHash, completed: false });
+      setValue('');
+      onClose();
     }
   }
 
@@ -62,4 +66,4 @@ function TaskForm({isOpen, setIsOpen}: TaskFormType) {
   );
 }
 
-export default TaskForm;
+export default TodoForm;
