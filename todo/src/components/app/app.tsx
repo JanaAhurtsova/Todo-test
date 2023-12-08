@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Button } from '@mui/material';
-import Header from './components/header';
-import TaskForm from './components/todo-form';
-import TodosList from './components/list';
-import Filter from './components/filter';
+import Header from '../header';
+import TaskForm from '../todo-form';
+import TodosList from '../list';
+import Filter from '../filter';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
