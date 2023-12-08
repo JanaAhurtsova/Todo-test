@@ -49,7 +49,7 @@
   align-items: center;
   overflow-x: scroll;
   position: absolute;
-  left: -1px;
+  left: -3px;
   top: 0;
 }
 
@@ -58,6 +58,7 @@
   display: inline-block;
   position: relative;
   z-index: 0;
+  left: -2px;
 }
 
 .Input__keyWord::before {
