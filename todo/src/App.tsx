@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { Button } from "@mui/material";
-import Header from "./components/header";
-import TaskForm from "./components/todo-form";
-import TodosList from "./components/list";
-import Filter from "./components/filter";
+import { useState } from 'react';
+import { Button } from '@mui/material';
+import Header from './components/header';
+import TaskForm from './components/todo-form';
+import TodosList from './components/list';
+import Filter from './components/filter';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
+  
   return (
     <>
       <Header />
@@ -20,4 +21,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

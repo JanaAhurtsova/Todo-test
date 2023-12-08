@@ -30,7 +30,8 @@ function TodoForm({isOpen, setIsOpen }: TodoFormType) {
     if (!value.trim()) {
       setError(ERROR_TASK);
     } else {
-      addTodo({ id: uuidv4(), value, tags, completed: false });
+      const todo = { id: uuidv4(), value, tags, completed: false };
+      addTodo(todo);
       setValue('');
       setTags([]);
       onClose();
@@ -46,9 +47,7 @@ function TodoForm({isOpen, setIsOpen }: TodoFormType) {
       <DialogContent>
         <TextField
           autoFocus
-          id="task"
           placeholder="Enter Your ToDo"
-          type="text"
           multiline
           maxRows={6}
           variant="standard"

@@ -1,14 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TodoType } from "@/components/todo/type";
+import { Storage } from "@/manager/storage";
 
 interface InitialStateTypes {
   todos: TodoType[];
-  filteredTodos: TodoType[];
+  tags: string[]
 }
 
 const initialState: InitialStateTypes = {
-  todos: [],
-  filteredTodos: [],
+  todos: Storage.getItem('todo'),
+  tags: Storage.getItem('tags')
 };
 
 export const ToDoSlice = createSlice({
@@ -19,7 +20,7 @@ export const ToDoSlice = createSlice({
       state.todos.push(action.payload);
     },
 
-    removeTodo(state, action: PayloadAction<Pick<TodoType, 'id'| 'tags'>>) {
+    removeTodo(state, action: PayloadAction<Pick<TodoType, 'id' | 'tags'>>) {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
     },
 
@@ -29,25 +30,18 @@ export const ToDoSlice = createSlice({
       todo!.value = action.payload.value;
     },
 
-    toggleTodoComplete(state, action: PayloadAction<Pick<TodoType, 'id'>>) {
+    toggleTodoComplete(state, action: PayloadAction<string>) {
       const toggledTodo = state.todos.find(
-        (todo) => todo.id === action.payload.id
+        (todo) => todo.id === action.payload
       );
       toggledTodo!.completed = !toggledTodo!.completed;
     },
 
-    filterByTags(state, action: PayloadAction<string[]>) {
-      state.filteredTodos = [];
-      state.todos.forEach((todo) => {
-        action.payload.forEach((tag) => {
-          if(todo.tags.includes(tag)) {
-            state.filteredTodos.push(todo);
-          }
-        })
-      })
-    },
+    addTags(state, action: PayloadAction<string[]>) {
+      state.tags = action.payload;
+    }
   },
 });
 
 export default ToDoSlice.reducer;
-export const { addTodo, removeTodo, editTodo, toggleTodoComplete, filterByTags } = ToDoSlice.actions;
+export const { addTodo, removeTodo, editTodo, toggleTodoComplete, addTags } = ToDoSlice.actions;

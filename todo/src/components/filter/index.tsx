@@ -1,7 +1,8 @@
 import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, SelectChangeEvent } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useAppSelector, useFilterByTags } from "@/redux/hooks";
+import { useAddTags, useAppSelector } from "@/redux/hooks";
 import { getExistTags } from "@/manager/tags";
+import { Storage } from "@/manager/storage";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -16,23 +17,27 @@ const MenuProps = {
 
 function Filter() {
   const todos = (useAppSelector((state) => state.todos));
-  const [tags, setTags] = useState<string[]>([]);
+  const stateTags = useAppSelector((state) => state.tags);
+  const addTags = useAddTags();
+  const [tags, setTags] = useState<string[]>(stateTags);
   const [options, setOption] = useState<string[]>([]);
-  const filterByTags = useFilterByTags();
 
   useEffect(() => {
     const existTags = getExistTags(todos);
     setOption(existTags);
-    filterByTags(tags);
-  }, [filterByTags, tags, todos]);
+  }, [todos]);
 
-  const handleChange = (event: SelectChangeEvent<typeof tags>) => {
+  useEffect(() => {
+    addTags(tags)
+    Storage.setTags('tags', tags);
+  }, [addTags, tags])
+
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
     const {
       target: { value },
     } = event;
     const tag = typeof value === 'string' ? value.split(',') : value;
     setTags(tag);
-    filterByTags(tag);
   };
 
   return (

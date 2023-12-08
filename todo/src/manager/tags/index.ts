@@ -15,3 +15,15 @@ export const getExistTags = (state: TodoType[]) => {
 
   return getUniqueTags(tags);
 }
+
+export const filterTodos = (todos: TodoType[], tags: string[]) => {
+  const filteredTodos: TodoType[] = [];
+  todos.forEach((todo) => {
+    tags.forEach((tag) => {
+      if (todo.tags.includes(tag)) {
+        filteredTodos.push(todo);
+      }
+    });
+  });
+  return filteredTodos;
+};

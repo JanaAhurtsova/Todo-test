@@ -5,7 +5,6 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  TextField,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -16,6 +15,7 @@ import { getTags, getUniqueTags } from '@/manager/tags';
 import { TodoType } from './type';
 import style from './style.module.scss';
 import Tags from '../tags';
+import Input from '../input';
 
 function Todo({ id, completed, value, tags }: TodoType) {
   const [isEdit, setIsEdit] = useState(false);
@@ -35,23 +35,22 @@ function Todo({ id, completed, value, tags }: TodoType) {
     const updatedTodo = { id, value: newValue, tags: newTags, completed };
     edit(updatedTodo);
   };
+
   return (
     <ListItem key={id} divider>
-      <Checkbox checked={completed} onChange={() => toggle({ id })} />
+      <Checkbox checked={completed} onChange={() => toggle(id)} />
       {isEdit ? (
         <Box className={style.box}>
-          <TextField
-            value={newValue}
-            onChange={(e) => setNewValue(e.target.value)}
-            autoFocus
-            className={style.edit}
-          />
-            <Tags tags={newTags} />
+          <Input value={newValue} setValue={setNewValue} keyWords={newTags} />
+          <Tags tags={newTags} />
         </Box>
       ) : (
         <Box className={style.box}>
-          <ListItemText className={style.edited} primary={newValue} />
-            <Tags tags={newTags} />
+          <ListItemText
+            className={style.edited}
+            primary={newValue.replace(/#/g, '')}
+          />
+          <Tags tags={newTags} />
         </Box>
       )}
 
@@ -61,15 +60,15 @@ function Todo({ id, completed, value, tags }: TodoType) {
             <SaveIcon />
           </IconButton>
         ) : (
-          <IconButton edge="end" aria-label="edit" onClick={() => setIsEdit(true)}>
+          <IconButton
+            edge="end"
+            aria-label="edit"
+            onClick={() => setIsEdit(true)}
+          >
             <EditIcon />
           </IconButton>
         )}
-        <IconButton
-          edge="end"
-          aria-label="delete"
-          onClick={() => remove({ id, tags })}
-        >
+        <IconButton edge="end" aria-label="delete" onClick={() => remove({id, tags})}>
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>
